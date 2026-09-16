@@ -1,3 +1,7 @@
+3.	Problem Statement: 
+Higher education institutions collect large amounts of student information, including academic performance, assessment results, attendance, and other relevant student data. However, identifying students who may be experiencing academic difficulties early enough can be challenging when this information is analysed manually or across separate systems.
+This project addresses the problem by developing an AI-based system that can analyse student data and identify students who may require additional academic support.
+
 4.Proposed Solution: 
 The system will analyse relevant student data and generate an indication of the student's academic risk level.
 
