@@ -1,3 +1,7 @@
+2.	Project Overview: 
+The AI Student Tracking System is an Artificial Intelligence solution designed for the higher education environment. The system aims to identify students who may be at risk of poor academic performance or withdrawal at an early stage, allowing appropriate support and intervention to be provided.
+The solution uses Python and Artificial Intelligence techniques to analyse student-related data, identify patterns, predict academic risk, and provide useful information to support decision-making.
+
 3.	Problem Statement: 
 Higher education institutions collect large amounts of student information, including academic performance, assessment results, attendance, and other relevant student data. However, identifying students who may be experiencing academic difficulties early enough can be challenging when this information is analysed manually or across separate systems.
 This project addresses the problem by developing an AI-based system that can analyse student data and identify students who may require additional academic support.
