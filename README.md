@@ -1,3 +1,21 @@
+1.	Project Team
+Module: Business Analysis 3.2
+Project Theme: AI Solution for Industries
+Project: AI Student Tracking System 
+
+Team Members:
+Student Number 	Full Name 	Signature 
+240764986 	Tinyiko Makhubele 	T.M
+224213881	Oratile Thobejane 	O. T
+223157457	Mandy Zulu 	M.Z
+224929496	John Makhalemele	J.M
+240864239	Tshepiso Bila 	T. B
+223854980	Thato Maaka 	T.M
+223615439	Kagiso Tlometsane 	K. T
+224977675	Makgabo Prudence Maaka 	M.P.M
+224283197	Wenzile Qopeni	W. Q
+224766570	Thabo Khumalo 	T. K
+
 2.	Project Overview: 
 The AI Student Tracking System is an Artificial Intelligence solution designed for the higher education environment. The system aims to identify students who may be at risk of poor academic performance or withdrawal at an early stage, allowing appropriate support and intervention to be provided.
 The solution uses Python and Artificial Intelligence techniques to analyse student-related data, identify patterns, predict academic risk, and provide useful information to support decision-making.
