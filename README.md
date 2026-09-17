@@ -53,16 +53,16 @@ The main objectives of the project are to:
 
 ### 6. AI Techniques 
 - Machine Learning
-Classification algorithms will be used to analyse student information and predict whether a student may be at risk.
+:Classification algorithms will be used to analyse student information and predict whether a student may be at risk.
 - Time Series Analysis
-Student performance data will be analysed over time to identify changes, trends, and patterns in academic performance.
+:Student performance data will be analysed over time to identify changes, trends, and patterns in academic performance.
 - Deep Learning
-Neural network techniques will be explored to determine whether complex patterns in student data can improve prediction performance.
+:Neural network techniques will be explored to determine whether complex patterns in student data can improve prediction performance.
 - Natural Language Processing
-NLP will be used to support natural-language interaction between students and the system.
+:NLP will be used to support natural-language interaction between students and the system.
 - Chatbot
-An AI-powered chatbot will provide students with information based on the system's available insights and support features.
+:An AI-powered chatbot will provide students with information based on the system's available insights and support features.
 - Data
-The project will use relevant student-related datasets containing information that can be used to analyse academic performance and student success.
+:The project will use relevant student-related datasets containing information that can be used to analyse academic performance and student success.
 
 
