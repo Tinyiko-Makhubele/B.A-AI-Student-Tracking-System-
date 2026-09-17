@@ -29,14 +29,14 @@ The system will analyse relevant student data and generate an indication of the 
 
 The proposed solution will include:
 
-Student data preprocessing and cleaning
-Exploratory data analysis
-Machine Learning for student risk prediction
-Time Series Analysis to monitor changes in student performance
-Deep Learning to identify complex patterns in the data
-Natural Language Processing (NLP) for student interaction
-An AI-powered chatbot to provide information and guidance
-A dashboard for presenting predictions, trends, and relevant insights
+• Student data preprocessing and cleaning
+• Exploratory data analysis
+• Machine Learning for student risk prediction
+• Time Series Analysis to monitor changes in student performance
+• Deep Learning to identify complex patterns in the data
+• Natural Language Processing (NLP) for student interaction
+• An AI-powered chatbot to provide information and guidance
+• A dashboard for presenting predictions, trends, and relevant insights
 
 The system is intended to act as a decision-support tool and not as a replacement for lecturers, academic advisors, or other university support staff.
 
@@ -55,17 +55,17 @@ The main objectives of the project are to:
 
 6.	AI Techniques
 The project will investigate and apply relevant Artificial Intelligence techniques, including:
-Machine Learning
+• Machine Learning
 Classification algorithms will be used to analyse student information and predict whether a student may be at risk.
-Time Series Analysis
+• Time Series Analysis
 Student performance data will be analysed over time to identify changes, trends, and patterns in academic performance.
-Deep Learning
+• Deep Learning
 Neural network techniques will be explored to determine whether complex patterns in student data can improve prediction performance.
-Natural Language Processing
+• Natural Language Processing
 NLP will be used to support natural-language interaction between students and the system.
-Chatbot
+• Chatbot
 An AI-powered chatbot will provide students with information based on the system's available insights and support features.
- Data
+• Data
 The project will use relevant student-related datasets containing information that can be used to analyse academic performance and student success.
 
 
