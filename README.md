@@ -6,6 +6,7 @@
 - **Project Title:** AI Student Tracking System
 
 | Student No | Name & Surname | Initials |
+|---|---|---|
 | 240764986  | 	Tinyiko Makhubele | 	T.M |
 | 224213881  |	Oratile Thobejane |	O. T|
 | 223157457  |	Mandy Zulu |	M.Z|
