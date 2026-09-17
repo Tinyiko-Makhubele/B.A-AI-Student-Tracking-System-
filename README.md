@@ -43,7 +43,7 @@ The system will analyse relevant student data and generate an indication of the 
 - Dashboard for predictions and insights
   
 The system is intended to act as a decision-support tool and not as a replacement for lecturers or advisors.
-## 5. Business Objectives
+### 5. Business Objectives
 
 The main objectives of the project are to:
 -	Identify students who may be at risk at an early stage.
