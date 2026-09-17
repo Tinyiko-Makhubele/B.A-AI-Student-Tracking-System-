@@ -1,4 +1,4 @@
-# B.A. AI Student Tracking System
+#  AI Student Tracking System
 
 ### 1. Project Information
 - **Module:** Business Analysis 3.2
