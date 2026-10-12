@@ -1,28 +1,23 @@
-# OULAD day-63 data preparation
+# Day-63 student risk dataset
 
-This folder contains the reviewed day-63 dataset and notes describing how it was prepared.
-
-## Versioned dataset
-
-`student_risk_at_day_63.csv` contains 26,292 eligible student-course records. It includes the binary `at_risk` target and a precomputed student-disjoint evaluation assignment (`train`, `test`, or `excluded_overlap`). The source `final_result` and `id_student` columns are omitted. Demographic fields are retained only for subgroup checks; `evaluation_split` and cutoff fields are metadata, not predictors.
+This folder contains the prepared OULAD dataset: [student_risk_at_day_63.csv](student_risk_at_day_63.csv), with 26,292 eligible student-course records. It is a research prototype; no model has been trained, and it is not evidence about current students at our institution.
 
 ## Rebuild
 
-Download the OULAD source CSVs from the [UCI dataset record](https://archive.ics.uci.edu/dataset/349/open%2Buniversity%2Blearning%2Banalytics%2Bdataset) and place them under `data/raw/`. Raw source CSVs and other generated CSVs are ignored by Git. From the repository root, run:
+Download the source CSVs from the [UCI OULAD record](https://archive.ics.uci.edu/dataset/349/open%2Buniversity%2Blearning%2Banalytics%2Bdataset) into `data/raw/`, then run from the repository root:
 
-```powershell
+~~~powershell
 python -m pip install -r requirements-data-prep.txt
 python scripts\prepare_dataset.py
 python scripts\check_dataset.py
-```
+~~~
 
-The UCI record lists OULAD under CC BY 4.0. This derived table adapts OULAD through linked-table joins, day-63 feature filtering, cohort filtering, target mapping, and evaluation-split assignment. Cite Kuzilek, Hlosta, and Zdrahal (2017), *Open University Learning Analytics Dataset*, *Scientific Data*, 4, 170171, https://doi.org/10.1038/sdata.2017.171.
+The scripts write generated files to `outputs/`; the reviewed CSV in this folder is the versioned dataset.
 
-## Supporting notes
+## Notes
 
-- `dataset_guide.md` describes joins, feature meanings, target, split, and limitations.
-- `how_risk_is_defined.md` records label, cutoff, and leakage rules.
-- `data_quality_notes.md` records the source and modelling-table inspection.
-- `week_one_checklist.md` maps the work to the Week 1 checklist.
+- [dataset_guide.md](dataset_guide.md): columns and joins.
+- [how_risk_is_defined.md](how_risk_is_defined.md): label and cutoff rules.
+- [data_quality_notes.md](data_quality_notes.md): data checks and preparation observations.
 
-No model has been trained. This public dataset supports a prototype and should not be interpreted as evidence about current students at the project institution.
+OULAD is listed as CC BY 4.0. Please cite Kuzilek, Hlosta, and Zdrahal (2017), [Open University Learning Analytics Dataset](https://doi.org/10.1038/sdata.2017.171), *Scientific Data*, 4, 170171.
