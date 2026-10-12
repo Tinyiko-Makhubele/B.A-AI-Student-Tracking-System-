@@ -1,8 +1,8 @@
-# OULAD preparation scripts
+# Dataset preparation scripts
 
-These scripts rebuild and inspect the day-63 modelling table documented in data/processed/. They expect the original OULAD CSV files in data/raw/ and use the dependency listed in requirements-data-prep.txt.
+Run these from the repository root after placing the OULAD source CSVs in data/raw/:
 
-Run from the repository root:
+    python scripts/prepare_dataset.py
+    python scripts/check_dataset.py
 
-    python scripts/build_oulad_day63.py
-    python scripts/inspect_oulad.py
+The scripts write generated tables and the quality report under outputs/. The reviewed dataset and preparation notes are versioned in data/processed/.
