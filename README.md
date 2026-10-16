@@ -1,72 +1,34 @@
-#  AI Student Tracking System
+# AI Student Tracking System
 
-### 1. Project Information
-- **Module:** Business Analysis 3.2
-- **Theme:** AI Solution for Industries
-- **Project Title:** AI Student Tracking System
+## Project overview
 
-| Student No | Name & Surname | Initials |
-|---|---|---|
-| 240764986  | 	Tinyiko Makhubele | 	T.M |
-| 224213881  |	Oratile Thobejane |	O. T|
-| 223157457  |	Mandy Zulu |	M.Z|
-| 224929496  |	John Makhalemele|	J.M|
-| 240864239  |	Tshepiso Bila |	T. B|
-| 223854980  |	Thato Maaka |	T.M|
-| 223615439  |	Kagiso Tlometsane |	K. T|
-| 224977695  |	Makgabo Prudence Maaka |	M.P.M|
-| 224283197  |	Wenzile Qopeni	|W. Q|
-| 224766570  |	Thabo Khumalo 	|T. K|
+This Business Analysis 3.2 project explores an AI-supported early-warning approach for student support. The current implementation work prepares and documents a day-63 cohort from the Open University Learning Analytics Dataset (OULAD). It is a research prototype using historical public data, not a tool validated for current students at VUT.
 
-### 2. Project Overview
+## Week 1: data preparation
 
-The AI Student Tracking System is an Artificial Intelligence solution designed for the higher education environment. The system aims to identify students who may be at risk of poor academic performance or withdrawal at an early stage, allowing appropriate support and intervention to be provided.
-The solution uses Python and Artificial Intelligence techniques to analyse student-related data, identify patterns, predict academic risk, and provide useful information to support decision-making.
+The processed cohort contains 26,422 student-course records from seven modules and 22 presentations. Each record represents one student in one module presentation. The outcome label, `at_risk`, is 1 for a later `Fail` or `Withdrawn` result and 0 for `Pass` or `Distinction`.
 
-### 3. Problem Statement
+The corrected eligibility rule requires a known registration date on or before course day 63. OULAD uses exactly `-1` for no recorded unregistration; those records remain eligible when the registration rule is met. Other unregistration dates on or before day 63 indicate the student had already left and are excluded. This correction restores 145 eligible records.
 
-Higher education institutions collect large amounts of student information, including academic performance, assessment results, attendance, and other relevant student data. However, identifying students who may be experiencing academic difficulties early enough can be challenging when this information is analysed manually or across separate systems.
-This project addresses the problem by developing an AI-based system that can analyse student data and identify students who may require additional academic support.
+Assessment features count known, nonnegative due dates up to day 63, submissions recorded by that date, and due assessments without a recorded submission by then. VLE activity after day 63 is excluded. Exact repeated VLE rows are retained because their provenance is unclear. Assessment scores are not used because their availability dates are not provided.
 
-### 4. Proposed Solution
+The versioned CSV omits direct student IDs, final-result text, and unregistration dates. Demographic fields remain available for later subgroup review. The processed file has no training/test assignment.
 
-The system will analyse relevant student data and generate an indication of the student's academic risk level.
+## Rebuild the dataset
 
-**Features include:**
-- Student data preprocessing and cleaning
-- Exploratory Data Analysis (EDA)
-- Machine Learning for student risk prediction
-- Time Series Analysis to monitor changes
-- Deep Learning for complex patterns
-- NLP for student interaction
-- AI-powered chatbot
-- Dashboard for predictions and insights
-  
-The system is intended to act as a decision-support tool and not as a replacement for lecturers or advisors.
-### 5. Business Objectives
+Place the seven OULAD source CSV files in `data/raw/`, then run these commands from the repository root:
 
-The main objectives of the project are to:
--	Identify students who may be at risk at an early stage.
--	Support data-driven decision-making within the education environment.
--	Help academic staff prioritise students who may require intervention.
--	Monitor student performance and identify changes over time.
--	Support targeted academic interventions.
--	Improve the efficiency of student-support processes.
--	Contribute to improved student progression and retention.
+```powershell
+python -m pip install -r requirements-data-prep.txt
+python scripts\prepare_dataset.py
+python scripts\check_dataset.py
+python scripts\inspect_oulad.py
+```
 
-### 6. AI Techniques 
+The scripts write the processed table to `data/processed/` and quality reports to `outputs/`. Raw data and ID-bearing audit files are not committed.
 
-- Machine Learning
-:Classification algorithms will be used to analyse student information and predict whether a student may be at risk.
-- Time Series Analysis
-:Student performance data will be analysed over time to identify changes, trends, and patterns in academic performance.
-- Deep Learning
-:Neural network techniques will be explored to determine whether complex patterns in student data can improve prediction performance.
-- Natural Language Processing
-:NLP will be used to support natural-language interaction between students and the system.
-- Chatbot
-:An AI-powered chatbot will provide students with information based on the system's available insights and support features.
-- Data
-:The project will use relevant student-related datasets containing information that can be used to analyse academic performance and student success.
+## Data source and attribution
 
+OULAD is distributed under the [Creative Commons Attribution 4.0 International licence](https://creativecommons.org/licenses/by/4.0/). Cite Kuzilek, Hlosta, and Zdrahal (2017), *Scientific Data*, 4, 170171, [doi:10.1038/sdata.2017.171](https://doi.org/10.1038/sdata.2017.171), and describe the preprocessing changes when reusing the derived data.
 
+See [the processed-data guide](data/processed/README.md), [the cohort and label rules](data/processed/how_risk_is_defined.md), and [the quality notes](data/processed/data_quality_notes.md) for details and limitations.

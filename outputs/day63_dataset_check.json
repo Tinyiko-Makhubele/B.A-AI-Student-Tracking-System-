@@ -1,0 +1,9 @@
+{
+  "rows": 26422,
+  "columns": 40,
+  "target_counts": {
+    "0": 15381,
+    "1": 11041
+  },
+  "missing_cells": 999
+}
