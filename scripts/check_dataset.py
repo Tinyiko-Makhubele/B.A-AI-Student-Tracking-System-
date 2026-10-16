@@ -5,13 +5,13 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "processed" / "student_risk_at_day_63.csv"
-OUT = ROOT / "outputs"
+WORK = ROOT / "work"
 EXPECTED_ROWS = 26_422
 EXPECTED_COLUMNS = 40
 
 
 def main() -> None:
-    OUT.mkdir(parents=True, exist_ok=True)
+    WORK.mkdir(parents=True, exist_ok=True)
     if not DATA.is_file():
         raise FileNotFoundError(f"Run scripts/prepare_dataset.py first; missing {DATA}")
     data = pd.read_csv(DATA)
@@ -34,7 +34,7 @@ def main() -> None:
         "target_counts": {str(k): int(v) for k, v in data["at_risk"].value_counts().sort_index().items()},
         "missing_cells": int(data.isna().sum().sum()),
     }
-    (OUT / "day63_dataset_check.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    (WORK / "day63_dataset_check.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"Validated {len(data):,} rows x {len(data.columns)} columns; target={summary['target_counts']}; missing cells={summary['missing_cells']}.")
 
 

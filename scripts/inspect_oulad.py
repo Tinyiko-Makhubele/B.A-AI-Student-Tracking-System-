@@ -4,9 +4,10 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = Path(os.environ.get('EDUAI_RAW_DIR', ROOT / 'data' / 'raw'))
-OUT = ROOT / 'outputs'
+WORK = ROOT / 'work'
 PROCESSED = ROOT / 'data' / 'processed'
-OUT.mkdir(exist_ok=True)
+WORK.mkdir(exist_ok=True)
+PROCESSED.mkdir(exist_ok=True)
 
 lines = ['# Day-63 data quality summary', '']
 lines += ['## Summary of source tables', '', '| File | Rows | Columns | Missing cells (`?` treated as missing) | Exact duplicate rows |', '|---|---:|---:|---:|---:|']
@@ -20,7 +21,7 @@ for path in sorted(RAW.glob('*.csv')):
 
 processed_path = PROCESSED / 'student_risk_at_day_63.csv'
 processed = pd.read_csv(processed_path)
-audit = pd.read_csv(OUT / 'oulad_at_risk_day63_source_rows.csv')
+audit = pd.read_csv(WORK / 'oulad_at_risk_day63_source_rows.csv')
 key = ['code_module', 'code_presentation', 'id_student']
 lines += [
     '## Processed cohort table', '',
@@ -44,7 +45,7 @@ lines += [
     '- See `../data/processed/dataset_guide.md` and `../data/processed/how_risk_is_defined.md` for the cohort, feature, and leakage decisions.',
     ''
 ]
-report = OUT / 'step4_data_quality_report.md'
+report = PROCESSED / 'step4_data_quality_report.md'
 report.write_text('\n'.join(lines), encoding='utf-8')
 print(f'Wrote {report}')
 print(f'Processed cohort table: {len(processed):,} × {len(processed.columns)}; target balance: {processed.at_risk.value_counts().sort_index().to_dict()}')

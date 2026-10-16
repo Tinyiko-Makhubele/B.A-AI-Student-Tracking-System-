@@ -13,7 +13,7 @@ python scripts\check_dataset.py
 python scripts\inspect_oulad.py
 ```
 
-The preparation script builds the day-63 cohort and cutoff-based assessment and VLE summaries. The checking and inspection scripts write summaries under `outputs/`. Raw source files and ID-bearing intermediate audits are not committed.
+The preparation script builds the day-63 cohort and cutoff-based assessment and VLE summaries. The quality report is saved beside the processed table; temporary audits and machine-readable summaries go under the ignored local `work/` folder. Raw source files and ID-bearing intermediate audits are not committed.
 
 Eligibility requires a known registration date on or before day 63. OULAD uses exactly `-1` to mean that no unregistration date was recorded; other unregistration dates on or before day 63 are excluded. See [the dataset guide](dataset_guide.md), [the cohort and label rules](how_risk_is_defined.md), and [the quality notes](data_quality_notes.md) for the full decisions and limitations.
 

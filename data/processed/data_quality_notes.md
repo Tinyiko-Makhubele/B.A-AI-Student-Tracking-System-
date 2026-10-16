@@ -19,4 +19,4 @@ There are 999 missing values, all in `imd_band`. No direct student identifier, f
 - `studentVle.csv` has 787,170 exact repeated rows. They are retained because the source does not explain whether they are duplicated exports or separate click records. Any deduplicated version should be treated as a sensitivity analysis.
 - The processed table is descriptive preparation for later analysis. It has not been split for training and testing, and no model performance is reported here.
 
-The reproducible quality report is in [`outputs/step4_data_quality_report.md`](../../outputs/step4_data_quality_report.md). The cohort and feature rules are described in [`how_risk_is_defined.md`](how_risk_is_defined.md).
+The reproducible quality report is in [`step4_data_quality_report.md`](step4_data_quality_report.md). The cohort and feature rules are described in [`how_risk_is_defined.md`](how_risk_is_defined.md).

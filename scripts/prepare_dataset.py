@@ -1,4 +1,4 @@
-"""Build the EduAI OULAD day-63 cohort, features, and audit outputs."""
+"""Build the EduAI OULAD day-63 cohort, features, and local audit files."""
 
 from pathlib import Path
 import json
@@ -9,7 +9,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = Path(os.environ.get("EDUAI_RAW_DIR", ROOT / "data" / "raw"))
-OUT = ROOT / "outputs"
+WORK = ROOT / "work"
 PROCESSED = ROOT / "data" / "processed"
 CUTOFF = 63
 KEY = ["code_module", "code_presentation", "id_student"]
@@ -47,7 +47,7 @@ def load_sources():
 
 
 def main():
-    OUT.mkdir(parents=True, exist_ok=True)
+    WORK.mkdir(parents=True, exist_ok=True)
     PROCESSED.mkdir(parents=True, exist_ok=True)
     s = load_sources()
     info = s["studentInfo.csv"].copy()
@@ -129,7 +129,7 @@ def main():
     base = base.sort_values(KEY).reset_index(drop=True)
     if base.duplicated(KEY).any():
         raise ValueError("Feature dataset contains duplicate student-course keys")
-    base.to_csv(OUT / "oulad_at_risk_day63_prepared.csv", index=False)
+    base.to_csv(WORK / "oulad_at_risk_day63_prepared.csv", index=False)
 
     # One row per roster key with explicit and mutually exclusive exclusion reason.
     reason = pd.Series("eligible", index=base.index, dtype="object")
@@ -141,14 +141,14 @@ def main():
     audit = base[KEY + ["date_registration", "date_unregistration", "final_result"]].copy()
     audit["eligibility_status"] = reason
     audit["exclusion_reason"] = reason.where(reason.ne("eligible"), "")
-    audit.to_csv(OUT / "oulad_day63_source_audit.csv", index=False)
-    audit.loc[audit["eligibility_status"].ne("eligible")].to_csv(OUT / "oulad_day63_exclusions.csv", index=False)
+    audit.to_csv(WORK / "oulad_day63_source_audit.csv", index=False)
+    audit.loc[audit["eligibility_status"].ne("eligible")].to_csv(WORK / "oulad_day63_exclusions.csv", index=False)
 
     eligible = base.loc[reason.eq("eligible")].copy()
     eligible["at_risk"] = eligible["final_result"].isin(["Fail", "Withdrawn"]).astype("int8")
     if eligible["final_result"].isna().any():
         raise ValueError("Eligible rows have missing final_result")
-    eligible.to_csv(OUT / "oulad_at_risk_day63_source_rows.csv", index=False)
+    eligible.to_csv(WORK / "oulad_at_risk_day63_source_rows.csv", index=False)
 
     # Keep the outcome label and day-63 fields for later modelling, but leave
     # train/test assignment and model-specific feature handling to that stage.
@@ -182,9 +182,9 @@ def main():
         "eligible_due_assessment_opportunities": int(eligible["assessments_due_by_cutoff"].sum()),
         "eligible_submitted_assessment_opportunities_by_cutoff": int(eligible["assessments_submitted_by_cutoff"].sum()),
         "eligible_not_submitted_assessment_opportunities_by_cutoff": int(eligible["assessments_not_submitted_by_cutoff"].sum()),
-        "outputs": ["outputs/oulad_at_risk_day63_prepared.csv", "data/processed/student_risk_at_day_63.csv",
-                    "oulad_at_risk_day63_source_rows.csv", "oulad_day63_source_audit.csv",
-                    "oulad_day63_exclusions.csv"],
+        "generated_local_files": ["work/oulad_at_risk_day63_prepared.csv", "data/processed/student_risk_at_day_63.csv",
+                                  "work/oulad_at_risk_day63_source_rows.csv", "work/oulad_day63_source_audit.csv",
+                                  "work/oulad_day63_exclusions.csv"],
         "audit_only_fields": ["gender", "region", "highest_education", "imd_band", "age_band",
                               "disability", "code_presentation",
                               "prediction_cutoff_day", "prediction_cutoff_rule"],
@@ -200,7 +200,7 @@ def main():
         "previous_target_counts": {str(k): int(v) for k, v in previous_eligible.final_result.isin(["Fail", "Withdrawn"]).astype("int8").value_counts().sort_index().items()},
         "new_target_counts": report["at_risk_counts"],
     }
-    (OUT / "day63_preprocessing_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (WORK / "day63_preprocessing_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     comparison = [
         "# Day-63 eligibility comparison", "",
         "The previous rule treated every recorded unregistration value at or before day 63 as a withdrawal. The corrected rule recognizes exactly -1 as OULAD's no-recorded-unregistration sentinel, while excluding other dates on or before day 63. It also requires a known registration date on or before day 63.", "",
@@ -211,7 +211,7 @@ def main():
         f"| Keys added | — | {len(added_keys):,} |", "",
         "The key counts above are computed directly from the raw roster using both rules. The corrected cohort is the one used for the rebuilt dataset.", "",
     ]
-    (OUT / "day63_previous_comparison.md").write_text("\n".join(comparison), encoding="utf-8")
+    (WORK / "day63_previous_comparison.md").write_text("\n".join(comparison), encoding="utf-8")
     lines = ["EduAI Day-63 preprocessing report", "", f"Cutoff: inclusive course day {CUTOFF}",
              f"Roster rows: {len(base):,}",
              f"Eligible student-course rows: {len(eligible):,}", "", "Exclusions:"]
@@ -224,7 +224,7 @@ def main():
               f"Eligible due assessment opportunities by day 63: {int(eligible['assessments_due_by_cutoff'].sum()):,}",
               f"Submitted opportunities by day 63: {int(eligible['assessments_submitted_by_cutoff'].sum()):,}",
               f"Not submitted by day 63: {int(eligible['assessments_not_submitted_by_cutoff'].sum()):,}"]
-    (OUT / "day63_preprocessing_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (WORK / "day63_preprocessing_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
     print(f"Processed table: {processed_path}")
 

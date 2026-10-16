@@ -3,7 +3,3 @@ work/
 __pycache__/
 *.py[cod]
 data/raw/*.csv
-outputs/*.csv
-outputs/*.joblib
-
-outputs/day63_preprocessing_report.json

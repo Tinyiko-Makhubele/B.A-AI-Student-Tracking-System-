@@ -25,7 +25,7 @@ python scripts\check_dataset.py
 python scripts\inspect_oulad.py
 ```
 
-The scripts write the processed table to `data/processed/` and quality reports to `outputs/`. Raw data and ID-bearing audit files are not committed.
+The scripts write the processed table and the Step 4 quality report to `data/processed/`. Temporary audits and machine-readable summaries go under the ignored local `work/` folder. Raw data and ID-bearing audit files are not committed.
 
 ## Data source and attribution
 
