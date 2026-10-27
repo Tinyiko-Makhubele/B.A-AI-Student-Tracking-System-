@@ -7,3 +7,5 @@ outputs_figures/
 ~$*.docx
 .env
 .ipynb_checkpoints/
+EduAI-Code/
+main
