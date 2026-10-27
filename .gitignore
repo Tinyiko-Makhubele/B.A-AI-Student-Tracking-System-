@@ -7,10 +7,3 @@ outputs_figures/
 ~$*.docx
 .env
 .ipynb_checkpoints/
-
-__pycache__/
-venv/
-outputs/
-outputs_figures/
-~$*.docx
-*.pyc
