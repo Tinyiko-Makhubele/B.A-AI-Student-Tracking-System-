@@ -1,12 +1,9 @@
-.venv/
-work/
-__pycache__/
-*.py[cod]
-data/raw/*.csv
-
-__pycache__/
 venv/
+__pycache__/
+*.pyc
+*.pyo
 outputs/
 outputs_figures/
 ~$*.docx
-*.pyc
+.env
+.ipynb_checkpoints/
