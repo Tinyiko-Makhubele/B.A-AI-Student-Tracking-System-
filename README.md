@@ -14,12 +14,10 @@
 | 224213881 | Oratile | Thobejane | O.T |
 | 223157457 | Mandy | Zulu | M.Z |
 | 240864239 | Tshepiso | Bila | T.B |
-| 223854980 | Thato | Maaka | T.M |
 | 223615439 | Kagiso | Tlometsane | K.T |
 | 224929496 | Prudence | Maaka | M.P.M |
 | 224283197 | Wenzile | Qopeni | W.Q |
 | 224766570 | Thabo | Khumalo | T.K |
-| 224977695 | Makgabo Prudence | Maaka | M.P.M |
 | 224929496 | John | Makhalemele | J.M |
 
 ## 2. Project Overview
