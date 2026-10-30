@@ -1,68 +1,74 @@
-"""Analyse academic performance and engagement changes."""
+"""Load and prepare student academic data for risk classification."""
 
+import numpy as np
 import pandas as pd
-from Settings import DATA_PATH, OUTPUT_FOLDER, make_output_folder
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+from Settings import DATA_PATH, TARGET_COLUMN, RANDOM_STATE
+
+MARK_COLUMNS = ["average_mark", "latest_mark", "mark_change"]
 
 
-def run_performance_trend():
-    """Summarise student performance and engagement indicators."""
+def load_and_prepare(path=DATA_PATH):
+    data = pd.read_csv(path).drop_duplicates().copy()
 
-    data = pd.read_csv(DATA_PATH)
+    if TARGET_COLUMN not in data.columns:
+        raise ValueError(f"Missing target column: {TARGET_COLUMN}")
 
-    print("\nSTUDENT PERFORMANCE TREND ANALYSIS")
-    print("-" * 50)
+    missing_target = data[TARGET_COLUMN].isna().sum()
+    if missing_target:
+        print(f"Removing {missing_target} records with unknown target labels.")
+        data = data.dropna(subset=[TARGET_COLUMN])
 
-    # Classify changes in academic marks
-    data["performance_trend"] = "Stable"
+    if not set(data[TARGET_COLUMN].unique()).issubset({0, 1}):
+        raise ValueError("at_risk must contain only 0 and 1.")
 
-    data.loc[data["mark_change"] > 0, "performance_trend"] = "Improving"
-    data.loc[data["mark_change"] < 0, "performance_trend"] = "Declining"
+    for column in MARK_COLUMNS:
+        indicator = f"{column}_was_missing"
+        if column in data.columns and indicator not in data.columns:
+            data[indicator] = data[column].isna().astype(int)
 
-    # Classify changes in student engagement
-    data["engagement_trend"] = "Stable"
-
-    data.loc[data["engagement_change"] > 0, "engagement_trend"] = "Increasing"
-    data.loc[data["engagement_change"] < 0, "engagement_trend"] = "Decreasing"
-
-    # Identify records where mark change was originally missing
-    if "mark_change_was_missing" in data.columns:
-        missing = data["mark_change_was_missing"] == 1
-        data.loc[missing, "performance_trend"] = "Unknown"
-
-    print("\nAcademic performance trends:")
-    print(data["performance_trend"].value_counts())
-
-    print("\nStudent engagement trends:")
-    print(data["engagement_trend"].value_counts())
-
-    print("\nAverage marks by academic risk category:")
-    print(data.groupby("at_risk")["average_mark"].mean().round(2))
-
-    print("\nAverage missed assessments by academic risk category:")
-    print(data.groupby("at_risk")["missed_assessments"].mean().round(2))
-
-    # the results
-    make_output_folder()
-
-    summary = data[
-        [
-            "record_key",
-            "performance_trend",
-            "engagement_trend",
-            "average_mark",
-            "latest_mark",
-            "missed_assessments",
-            "at_risk",
-        ]
+    columns_to_remove = [
+        "record_key", "student_group",
+        "average_mark_was_missing", "latest_mark_was_missing",
+        "mark_change_was_missing"
     ]
 
-    summary.to_csv(
-        OUTPUT_FOLDER / "student_performance_trends.csv",
-        index=False
+    X = data.drop(columns=[TARGET_COLUMN] + columns_to_remove, errors="ignore")
+    y = data[TARGET_COLUMN].astype(int)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=RANDOM_STATE, stratify=y
     )
 
-    print("\nPerformance trend results saved successfully.")
+    print("\nDATA PREPARATION COMPLETED")
+    print("-" * 40)
+    print(f"Training records: {len(X_train):,}")
+    print(f"Testing records: {len(X_test):,}")
+    print(f"Number of features: {X_train.shape[1]}")
+
+    return X_train, y_train, X_test, y_test
 
 
-if __name__ == "__main__":
-    run_performance_trend()
+def build_preprocessor(X):
+    numerical = X.select_dtypes(include=np.number).columns.tolist()
+    categorical = X.select_dtypes(exclude=np.number).columns.tolist()
+
+    numerical_steps = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scale", StandardScaler())
+    ])
+
+    categorical_steps = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("encode", OneHotEncoder(handle_unknown="ignore"))
+    ])
+
+    return ColumnTransformer([
+        ("num", numerical_steps, numerical),
+        ("cat", categorical_steps, categorical)
+    ])
