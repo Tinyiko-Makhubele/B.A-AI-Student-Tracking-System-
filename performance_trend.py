@@ -41,7 +41,7 @@ def run_performance_trend():
     print("\nAverage missed assessments by academic risk category:")
     print(data.groupby("at_risk")["missed_assessments"].mean().round(2))
 
-    # Save the results
+    # the results
     make_output_folder()
 
     summary = data[
