@@ -15,7 +15,6 @@
 | 223157457 | Mandy | Zulu | M.Z |
 | 240864239 | Tshepiso | Bila | T.B |
 | 223615439 | Kagiso | Tlometsane | K.T |
-| 224929496 | Prudence | Maaka | M.P.M |
 | 224283197 | Wenzile | Qopeni | W.Q |
 | 224766570 | Thabo | Khumalo | T.K |
 | 224929496 | John | Makhalemele | J.M |
