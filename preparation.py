@@ -1,40 +1,68 @@
-import numpy as np
+"""Analyse academic performance and engagement changes."""
+
 import pandas as pd
-from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from Settings import DATA_PATH, TARGET_COLUMN, RANDOM_STATE
+from Settings import DATA_PATH, OUTPUT_FOLDER, make_output_folder
 
-MARK_COLUMNS = ['average_mark', 'latest_mark', 'mark_change']
 
-def load_and_prepare(path=DATA_PATH):
-    data = pd.read_csv(path).drop_duplicates().copy()
-    if TARGET_COLUMN not in data:
-        raise ValueError(f'Missing target column: {TARGET_COLUMN}')
-    missing_target = data[TARGET_COLUMN].isna().sum()
-    if missing_target:
-        print(f'Removing {missing_target} records with unknown target labels.')
-        data = data.dropna(subset=[TARGET_COLUMN])
-    if not set(data[TARGET_COLUMN].unique()).issubset({0, 1}):
-        raise ValueError('at_risk must contain only 0 and 1.')
-    for col in MARK_COLUMNS:
-        if col in data and f'{col}_was_missing' not in data:
-            data[f'{col}_was_missing'] = data[col].isna().astype(int)
-            
-    
-    data = data.drop(columns=['record_key', 'student_group'], errors='ignore')
-    X = data.drop(columns=[TARGET_COLUMN])
-    y = data[TARGET_COLUMN].astype(int)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=RANDOM_STATE, stratify=y)
-    return X_train, y_train, X_test, y_test
+def run_performance_trend():
+    """Summarise student performance and engagement indicators."""
 
-def build_preprocessor(X):
-    numerical = X.select_dtypes(include=np.number).columns.tolist()
-    categorical = X.select_dtypes(exclude=np.number).columns.tolist()
-    num_steps = Pipeline([('imputer', SimpleImputer(strategy='median', add_indicator=False)),
-                          ('scale', StandardScaler())])
-    cat_steps = Pipeline([('imputer', SimpleImputer(strategy='most_frequent')),
-                          ('encode', OneHotEncoder(handle_unknown='ignore'))])
-    return ColumnTransformer([('num', num_steps, numerical), ('cat', cat_steps, categorical)])
+    data = pd.read_csv(DATA_PATH)
+
+    print("\nSTUDENT PERFORMANCE TREND ANALYSIS")
+    print("-" * 50)
+
+    # Classify changes in academic marks
+    data["performance_trend"] = "Stable"
+
+    data.loc[data["mark_change"] > 0, "performance_trend"] = "Improving"
+    data.loc[data["mark_change"] < 0, "performance_trend"] = "Declining"
+
+    # Classify changes in student engagement
+    data["engagement_trend"] = "Stable"
+
+    data.loc[data["engagement_change"] > 0, "engagement_trend"] = "Increasing"
+    data.loc[data["engagement_change"] < 0, "engagement_trend"] = "Decreasing"
+
+    # Identify records where mark change was originally missing
+    if "mark_change_was_missing" in data.columns:
+        missing = data["mark_change_was_missing"] == 1
+        data.loc[missing, "performance_trend"] = "Unknown"
+
+    print("\nAcademic performance trends:")
+    print(data["performance_trend"].value_counts())
+
+    print("\nStudent engagement trends:")
+    print(data["engagement_trend"].value_counts())
+
+    print("\nAverage marks by academic risk category:")
+    print(data.groupby("at_risk")["average_mark"].mean().round(2))
+
+    print("\nAverage missed assessments by academic risk category:")
+    print(data.groupby("at_risk")["missed_assessments"].mean().round(2))
+
+    # the results
+    make_output_folder()
+
+    summary = data[
+        [
+            "record_key",
+            "performance_trend",
+            "engagement_trend",
+            "average_mark",
+            "latest_mark",
+            "missed_assessments",
+            "at_risk",
+        ]
+    ]
+
+    summary.to_csv(
+        OUTPUT_FOLDER / "student_performance_trends.csv",
+        index=False
+    )
+
+    print("\nPerformance trend results saved successfully.")
+
+
+if __name__ == "__main__":
+    run_performance_trend()
