@@ -1,4 +1,4 @@
-<video src="EduAIApp.mp4" controls width="100%"></video>
+<video src="EduAiApp.mp4" controls width="100%"></video>
 # EduAI Student Tracking System
 
 ## 1. Project Information
